@@ -1,0 +1,4 @@
+model:
+  source: local
+  base_dir: /home/bun/projects/rag-knowledge-base/models/MinerU-Basic
+  small_backend: torch
