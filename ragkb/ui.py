@@ -9,27 +9,27 @@ class DemoUI:
 
     def build(self):
         a = self.actions
-        with gr.Blocks(title="知页 · RAG 知识库") as demo:
-            gr.Markdown("# 知页 · 课程知识库\n上传资料，追溯证据，观察检索如何改善回答。")
+        with gr.Blocks(title="基于RAG的智能知识库问答系统") as demo:
+            gr.Markdown("# 基于RAG的智能知识库问答系统")
             status = gr.Markdown(a.health())
             with gr.Tab("知识问答"):
                 with gr.Row():
                     with gr.Column(scale=3):
                         chatbot = gr.Chatbot(height=440, label="基于资料的回答", sanitize_html=True)
                         question = gr.Textbox(
-                            label="你的问题",
-                            placeholder="先在「文档管理」上传资料，再提出问题。",
+                            label="问题",
+                            placeholder="",
                             lines=2,
                         )
                         with gr.Row():
                             send = gr.Button("发送问题", variant="primary")
                             clear = gr.Button("新对话")
                     with gr.Column(scale=1):
-                        gr.Markdown("### 检索设置\n先扩大候选范围，再筛选最相关的证据。")
-                        recall_k = gr.Slider(5, 50, value=20, step=1, label="初始召回数量")
-                        final_k = gr.Slider(1, 10, value=5, step=1, label="最终证据数量")
+                        gr.Markdown("### 检索设置")
+                        recall_k = gr.Slider(5, 50, value=20, step=1, label="召回数量")
+                        final_k = gr.Slider(1, 10, value=5, step=1, label="重排数量")
                         rerank = gr.Checkbox(value=True, label="使用重排序")
-                        gr.Markdown("回答中的 [1]、[2] 对应下方来源。资料不足时应明确说明。")
+                        # gr.Markdown("回答中的 [1]、[2] 对应下方来源。资料不足时应明确说明。")
                 history = gr.State([])
                 sources = gr.Dataframe(
                     headers=["来源", "文件", "页码", "章节", "相似度", "重排分数", "原文"],
@@ -53,10 +53,10 @@ class DemoUI:
                 chatbot.clear(lambda: ([], [], "", [], {}, ""), outputs=outputs, queue=False)
 
             with gr.Tab("文档管理"):
-                gr.Markdown(
-                    "支持 PDF（含扫描件）、DOCX、Markdown、UTF-8 TXT、PNG/JPG。"
-                    "图片仅做 OCR 与图注检索；不提供图像语义检索。"
-                )
+                # gr.Markdown(
+                #     "支持 PDF（含扫描件）、DOCX、Markdown、UTF-8 TXT、PNG/JPG。"
+                #     "图片仅做 OCR 与图注检索；不提供图像语义检索。"
+                # )
                 upload_files = gr.File(
                     label="选择文档",
                     file_count="multiple",
@@ -103,10 +103,10 @@ class DemoUI:
                 demo.load(a.health, outputs=status)
 
             with gr.Tab("检索实验"):
-                gr.Markdown(
-                    "无需 DeepSeek 密钥。查看初始相似度排序与重排序后的变化，"
-                    "使用同一问题切换开关进行比较。分数用于排序，不代表答案正确概率。"
-                )
+                # gr.Markdown(
+                #     "无需 DeepSeek 密钥。查看初始相似度排序与重排序后的变化，"
+                #     "使用同一问题切换开关进行比较。分数用于排序，不代表答案正确概率。"
+                # )
                 query = gr.Textbox(label="检索问题")
                 with gr.Row():
                     experiment_recall = gr.Slider(5, 50, value=20, step=1, label="初始召回")
